@@ -46,7 +46,7 @@ foreach ($app in $apps) {
         $installString += " --version $($app.version)"
     }
     Write-Host "Executing the following command: '$installString'"
-    pwsh -c $installString
+    powershell.exe -c $installString
 }
 
 Write-Host "All applications have been installed successfully." -ForegroundColor Green
