@@ -45,7 +45,8 @@ foreach ($app in $apps) {
     $installString = "choco install $($app.name) -y --no-progress --noop" 
 
     if ($app.pre_script -ne "") {
-        powershell.exe  -c $installString
+        $fileName = loadFileFromGithub($app.pre_script)
+        & "./$($fileName)"  # Execute file
     }
 
     if ($app.version -ne "") {
