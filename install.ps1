@@ -41,12 +41,11 @@ foreach ($app in $apps) {
 
 foreach ($app in $apps) {
     Write-Host "Installing $app..." -ForegroundColor Green
+    $installString = "choco install $($app.name) -y" 
     if ($app.version -ne "") {
-        choco install $app.name -y --version $app.version
+        $installString += " --version $($app.version)"
     }
-    else {
-        choco install $app.name -y
-    }
+    pwsh -c $installString
 }
 
 Write-Host "All applications have been installed successfully." -ForegroundColor Green
