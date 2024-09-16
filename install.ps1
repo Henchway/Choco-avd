@@ -41,7 +41,7 @@ foreach ($app in $apps) {
 
 foreach ($app in $apps) {
     Write-Host "Installing $app..." -ForegroundColor Green
-    if ($app.version -eq "") {
+    if ($app.version -ne "") {
         choco install $app.name -y --version $app.version
     }
     else {
