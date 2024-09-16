@@ -1,4 +1,6 @@
-$GITHUB_URL=$args[0]
+param (
+    [string]$GITHUB_URL
+)
 
 # Define file name
 $filename = "uvnc.inf"

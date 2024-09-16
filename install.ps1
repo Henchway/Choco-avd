@@ -58,7 +58,7 @@ foreach ($app in $apps) {
 
     if ($app.pre_script -ne "") {
         $fileName = loadFileFromGithub($app.pre_script)
-        & "./$($fileName) -GITHUB_URL $($GITHUB_URL)"  # Execute file
+        powershell.exe "./$($fileName) -GITHUB_URL '$($GITHUB_URL)'"  # Execute file
     }
 
     if ($app.version -ne "") {
