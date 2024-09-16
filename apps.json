@@ -1,0 +1,8 @@
+﻿[
+    {
+        "name": "ultravnc",
+        "version": "",
+        "argumentString": "/LoadInf=.\\uvnc.inf",
+        "pre_script": "custom/uvnc/uvnc.ps1"
+    }
+]

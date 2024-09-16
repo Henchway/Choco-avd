@@ -1,3 +1,15 @@
+function loadFileFromGithub {
+    param (
+        [string]$filePath
+    )
+    $invokeUrl = "$($GITHUB_URL)/$($filePath)"
+    $fileName = ($filePath -split '/')[-1]
+    Write-Host "Filename: $($fileName)"
+    Invoke-WebRequest -Uri $invokeUrl -OutFile ".\$($fileName)"
+    return $fileName
+}
+
+
 # CONSTANTS
 $GITHUB_URL="https://raw.githubusercontent.com/Henchway/Choco-avd/main"
 
@@ -22,18 +34,18 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; `
 # Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
 # refreshenv
 
-# Define the URL of the CSV file in the GitHub repository
-$csvUrl = "$($GITHUB_URL)/apps.csv"
+# Define the URL of the JSON file in the GitHub repository
+$jsonUrl = "$($GITHUB_URL)/apps.json"
 
-# Define the path to save the CSV file locally
-$localCsvPath = ".\apps.csv"
+# Define the path to save the JSON file locally
+$localJsonPath = ".\apps.json"
 
-# Download the CSV file
-Write-Host "Downloading CSV from $csvUrl..."
-Invoke-WebRequest -Uri $csvUrl -OutFile $localCsvPath
+# Download the JSON file
+Write-Host "Downloading JSON from $jsonUrl..."
+Invoke-WebRequest -Uri $jsonUrl -OutFile $localJsonPath
 
-# Load the CSV file
-$apps = Import-Csv -Path $localCsvPath
+# Load the JSON file
+$apps = (Get-Content -Path $localJsonPath -Raw) | ConvertFrom-Json
 
 # Loop through each app and print the app and version
 foreach ($app in $apps) {
@@ -46,7 +58,7 @@ foreach ($app in $apps) {
 
     if ($app.pre_script -ne "") {
         $fileName = loadFileFromGithub($app.pre_script)
-        & "./$($fileName)"  # Execute file
+        & "./$($fileName) -GITHUB_URL $($GITHUB_URL)"  # Execute file
     }
 
     if ($app.version -ne "") {
@@ -61,15 +73,3 @@ foreach ($app in $apps) {
 
 Write-Host "All applications have been installed successfully." -ForegroundColor Green
 
-
-
-function loadFileFromGithub {
-    param (
-        [string]$filePath
-    )
-    $invokeUrl = "$($GITHUB_URL)/$($filePath)"
-    $fileName = ($filePath -split '/')[-1]
-    Write-Host "Filename: $($fileName)"
-    Invoke-WebRequest -Uri $invokeUrl -OutFile ".\$($fileName)"
-    return $fileName
-}
