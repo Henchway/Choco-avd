@@ -1,3 +1,6 @@
+# CONSTANTS
+$GITHUB_URL="https://raw.githubusercontent.com/Henchway/Choco-avd/main"
+
 # Enable TLS 1.2 (required for connecting to Chocolatey repository)
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -14,18 +17,16 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; `
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
 
-    
-
 # # Refresh environment variables
 # Write-Host "Refreshing environment variables..." -ForegroundColor Green
 # Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
 # refreshenv
 
 # Define the URL of the CSV file in the GitHub repository
-$csvUrl = "https://raw.githubusercontent.com/Henchway/Choco-avd/main/apps.csv"
+$csvUrl = "$($GITHUB_URL)/apps.csv"
 
 # Define the path to save the CSV file locally
-$localCsvPath = "$PSScriptRoot\apps.csv"
+$localCsvPath = ".\apps.csv"
 
 # Download the CSV file
 Write-Host "Downloading CSV from $csvUrl..."
@@ -41,9 +42,12 @@ foreach ($app in $apps) {
 
 foreach ($app in $apps) {
     Write-Host "Installing $app..." -ForegroundColor Green
-    $installString = "choco install $($app.name) -y --no-progress" 
+    $installString = "choco install $($app.name) -y --no-progress --noop" 
     if ($app.version -ne "") {
         $installString += " --version $($app.version)"
+    }
+    if ($app.argumentString -ne "") {
+        $installString += " --install-arguments='$($app.argumentString)'"
     }
     Write-Host "Executing the following command: '$installString'"
     powershell.exe -c $installString
