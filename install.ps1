@@ -41,7 +41,7 @@ foreach ($app in $apps) {
 
 foreach ($app in $apps) {
     Write-Host "Installing $app..." -ForegroundColor Green
-    $installString = "choco install $($app.name) -y" 
+    $installString = "choco install $($app.name) -y --no-progress" 
     if ($app.version -ne "") {
         $installString += " --version $($app.version)"
     }
