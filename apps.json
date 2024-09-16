@@ -1,5 +1,95 @@
 ﻿[
     {
+        "name": "7zip",
+        "version": "24.08.2000",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "adobereader",
+        "version": "2024.2.20857",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "amazon-workspaces",
+        "version": "5.22.1.4847",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "filezilla",
+        "version": "3.67.1",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "firefox",
+        "version": "129.0.2",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "googlechrome",
+        "version": "129.0.6668.42",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "mremoteng",
+        "version": "1.76.20.24615",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "notepadplusplus",
+        "version": "08.06.2009",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "putty",
+        "version": "0.81.0",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "python311",
+        "version": "03.11.2009",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "vlc",
+        "version": "3.0.21",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "vscode",
+        "version": "1.93.1",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "vscode-powershell",
+        "version": "02.02.2024",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "windows-sdk-10-version-2004-windbg",
+        "version": "10.0.19041.685",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
+        "name": "winscp",
+        "version": "06.03.2005",
+        "argumentString": "",
+        "pre_script": ""
+    },
+    {
         "name": "ultravnc",
         "version": "",
         "argumentString": "/LoadInf=.\\uvnc.inf",

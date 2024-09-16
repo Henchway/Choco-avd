@@ -1,17 +1,18 @@
+# CONSTANTS
+$GITHUB_URL="https://raw.githubusercontent.com/Henchway/Choco-avd/main"
+
 function loadFileFromGithub {
     param (
         [string]$filePath
     )
-    $invokeUrl = "$($GITHUB_URL)/$($filePath)"
+
+    $uniquenessParameter = [guid]::NewGuid()
+    $invokeUrl = "$($GITHUB_URL)/$($filePath)?token=$($uniquenessParameter)"
     $fileName = ($filePath -split '/')[-1]
-    Write-Host "Filename: $($fileName)"
     Invoke-WebRequest -Uri $invokeUrl -OutFile ".\$($fileName)"
     return $fileName
 }
 
-
-# CONSTANTS
-$GITHUB_URL="https://raw.githubusercontent.com/Henchway/Choco-avd/main"
 
 # Enable TLS 1.2 (required for connecting to Chocolatey repository)
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -35,14 +36,8 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; `
 # refreshenv
 
 # Define the URL of the JSON file in the GitHub repository
-$jsonUrl = "$($GITHUB_URL)/apps.json"
-
-# Define the path to save the JSON file locally
-$localJsonPath = ".\apps.json"
-
-# Download the JSON file
-Write-Host "Downloading JSON from $jsonUrl..."
-Invoke-WebRequest -Uri $jsonUrl -OutFile $localJsonPath
+$localJsonPath = loadFileFromGithub("apps.json")
+Write-Host $localJsonPath
 
 # Load the JSON file
 $apps = (Get-Content -Path $localJsonPath -Raw) | ConvertFrom-Json
