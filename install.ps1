@@ -43,6 +43,11 @@ foreach ($app in $apps) {
 foreach ($app in $apps) {
     Write-Host "Installing $app..." -ForegroundColor Green
     $installString = "choco install $($app.name) -y --no-progress --noop" 
+
+    if ($app.pre_script -ne "") {
+        powershell.exe  -c $installString
+    }
+
     if ($app.version -ne "") {
         $installString += " --version $($app.version)"
     }
@@ -54,3 +59,16 @@ foreach ($app in $apps) {
 }
 
 Write-Host "All applications have been installed successfully." -ForegroundColor Green
+
+
+
+function loadFileFromGithub {
+    param (
+        [string]$filePath
+    )
+    $invokeUrl = "$($GITHUB_URL)/$($filePath)"
+    $fileName = ($filePath -split '/')[-1]
+    Write-Host "Filename: $($fileName)"
+    Invoke-WebRequest -Uri $invokeUrl -OutFile ".\$($fileName)"
+    return $fileName
+}
