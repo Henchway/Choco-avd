@@ -45,6 +45,7 @@ foreach ($app in $apps) {
     if ($app.version -ne "") {
         $installString += " --version $($app.version)"
     }
+    Write-Host "Executing the following command: '$installString'"
     pwsh -c $installString
 }
 
