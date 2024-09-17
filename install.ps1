@@ -16,20 +16,15 @@ function Load-FileFromGithub {
     $LocalFilePath = "$TempDirectory$FileName"
     
     # Check if file already exists in temp directory
-    if (-not (Test-Path $LocalFilePath)) {
-        try {
-            $UniquenessParameter = [guid]::NewGuid()
-            $InvokeUrl = "$($GITHUB_URL)/$($FilePath)?token=$($UniquenessParameter)"
-            Invoke-WebRequest -Uri $InvokeUrl -OutFile $LocalFilePath -ErrorAction Stop
-            Write-Host "Downloaded: $FileName"
-        }
-        catch {
-            Write-Host "Error downloading $FileName from $InvokeUrl" -ForegroundColor Red
-            exit 1
-        }
+    try {
+        $UniquenessParameter = [guid]::NewGuid()
+        $InvokeUrl = "$($GITHUB_URL)/$($FilePath)?token=$($UniquenessParameter)"
+        Invoke-WebRequest -Uri $InvokeUrl -OutFile $LocalFilePath -ErrorAction Stop
+        Write-Host "Downloaded: $FileName"
     }
-    else {
-        Write-Host "Using cached file: $FileName"
+    catch {
+        Write-Host "Error downloading $FileName from $InvokeUrl" -ForegroundColor Red
+        exit 1
     }
     return $LocalFilePath
 }
@@ -39,7 +34,7 @@ function Load-FileFromGithub {
 
 # Check if running as Administrator
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Host "You need to run this script as Administrator!" -ForegroundColor Red
+    Write-Host "[FATAL] You need to run this script as Administrator! Exiting script." -ForegroundColor Red
     exit 1
 }
 
@@ -48,7 +43,13 @@ if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
     Write-Host "Installing Chocolatey..." -ForegroundColor Green
     Set-ExecutionPolicy Bypass -Scope Process -Force
     [System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
-    Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    try {
+        Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+    }
+    catch {
+        Write-Host "[FATAL] Failed to install Chocolatey. Exiting script."  -ForegroundColor Red
+        exit 1
+    }
 }
 
 # Load and parse the JSON file
@@ -57,15 +58,25 @@ try {
     $Apps = Get-Content -Path $LocalJsonPath -Raw | ConvertFrom-Json
 }
 catch {
-    Write-Host "Error loading apps.json" -ForegroundColor Red
+    Write-Host "[FATAL] Failed to load apps.json, error message: $($_.Exception.Message)" -ForegroundColor Red
     exit 1
 }
+
+# Set counters for successful installation
+$TotalAppCount = $Apps | Measure-Object | Select-Object -ExpandProperty Count
+$SuccessfulAppCount = $TotalAppCount
+
 
 # Loop through each app and install it
 foreach ($App in $Apps) {
     Write-Host "Installing $($App.name)..." -ForegroundColor Green
     $InstallCommand = "choco install $($App.name) -y --no-progress"
     
+    # Ensures to not install any applications when running in vscode
+    if ($env:TERM_PROGRAM -eq "vscode") {
+        $InstallCommand += " --noop"
+    }
+
     if ($App.version) {
         $InstallCommand += " --version $($App.version)"
     }
@@ -76,11 +87,28 @@ foreach ($App in $Apps) {
     # If pre-script is specified, run it
     if ($App.pre_script) {
         $PreScriptPath = Load-FileFromGithub $App.pre_script
-        powershell.exe -File $PreScriptPath -GITHUB_URL $($GITHUB_URL)
+        try {
+            powershell.exe -File $PreScriptPath -GITHUB_URL $($GITHUB_URL)
+        }
+        catch {
+            Write-Host "[ERROR] Failed to execute pre-script for app $($App.name), error message: $($_.Exception.Message)"  -ForegroundColor Red
+        }
     }
 
     Write-Host "Executing command: $InstallCommand"
-    powershell.exe -Command $InstallCommand
+    try {
+        powershell.exe -Command $InstallCommand
+        Write-Host "[INFO] Successfully installed $($App.name)"  -ForegroundColor Green
+    }
+    catch {
+        Write-Host "[ERROR] Failed to install $($App.name), error message: $($_.Exception.Message)"  -ForegroundColor Red
+        $SuccessfulAppCount -= 1
+    }
 }
 
-Write-Host "All applications have been installed successfully." -ForegroundColor Green
+Write-Host "[INFO] Successfully installed $($SuccessfulAppCount)/$($TotalAppCount) applications."
+if ($SuccessfulAppCount -lt $TotalAppCount) {
+    Write-Host "[FATAL] Not all apps were installed successfully, failing script."
+    exit 1
+}
+
