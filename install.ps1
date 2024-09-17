@@ -64,7 +64,7 @@ catch {
 # Loop through each app and install it
 foreach ($App in $Apps) {
     Write-Host "Installing $($App.name)..." -ForegroundColor Green
-    $InstallCommand = "choco install $($App.name) -y --no-progress --noop"
+    $InstallCommand = "choco install $($App.name) -y --no-progress"
     
     if ($App.version) {
         $InstallCommand += " --version $($App.version)"
