@@ -1,7 +1,6 @@
 # CONSTANTS
 $GITHUB_URL = "https://raw.githubusercontent.com/Henchway/Choco-avd/main"
 $TempDirectory = ".\temp\"
-$LocalJsonPath = Load-FileFromGithub "apps.json"
 
 # Ensure temp directory exists
 if (-not (Test-Path $TempDirectory)) {
@@ -53,6 +52,7 @@ if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
 }
 
 # Load and parse the JSON file
+$LocalJsonPath = Load-FileFromGithub "apps.json"
 try {
     $Apps = Get-Content -Path $LocalJsonPath -Raw | ConvertFrom-Json
 }
