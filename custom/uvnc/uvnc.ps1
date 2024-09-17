@@ -9,7 +9,7 @@ $filename = "uvnc.inf"
 $url = "$($GITHUB_URL)/custom/uvnc/$($filename)"
 
 # Define the path to save the CSV file locally
-$localPath = ".\$($filename)"
+$localPath = ".\temp\$($filename)"
 
 # Download the CSV file
 Write-Host "Downloading configuration file from $url..."

@@ -1,7 +1,7 @@
 ﻿[
     {
         "name": "7zip",
-        "version": "24.08.2000",
+        "version": "",
         "argumentString": "",
         "pre_script": ""
     },
@@ -43,7 +43,7 @@
     },
     {
         "name": "notepadplusplus",
-        "version": "08.06.2009",
+        "version": "8.6.9",
         "argumentString": "",
         "pre_script": ""
     },
@@ -55,7 +55,7 @@
     },
     {
         "name": "python311",
-        "version": "03.11.2009",
+        "version": "3.11.9",
         "argumentString": "",
         "pre_script": ""
     },
@@ -73,7 +73,7 @@
     },
     {
         "name": "vscode-powershell",
-        "version": "02.02.2024",
+        "version": "2024.2.2",
         "argumentString": "",
         "pre_script": ""
     },
@@ -92,7 +92,7 @@
     {
         "name": "ultravnc",
         "version": "",
-        "argumentString": "/LoadInf=.\\uvnc.inf",
+        "argumentString": "/LoadInf=.\\temp\\uvnc.inf",
         "pre_script": "custom/uvnc/uvnc.ps1"
     }
 ]
