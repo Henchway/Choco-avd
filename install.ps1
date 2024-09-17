@@ -29,6 +29,49 @@ function Load-FileFromGithub {
     return $LocalFilePath
 }
 
+function Install-Chocolatey {
+    if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
+        Write-Host "Installing Chocolatey..." -ForegroundColor Green
+        Set-ExecutionPolicy Bypass -Scope Process -Force
+        [System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
+        try {
+            Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+            Write-Host "Chocolatey installation completed." -ForegroundColor Green
+        }
+        catch {
+            Write-Host "[FATAL] Failed to install Chocolatey. Exiting script." -ForegroundColor Red
+            exit 1
+        }
+    } else {
+        Write-Host "Chocolatey is already installed." -ForegroundColor Yellow
+    }
+}
+
+function Uninstall-Chocolatey {
+    if (Get-Command choco -ErrorAction SilentlyContinue) {
+        Write-Host "Uninstalling Chocolatey..." -ForegroundColor Yellow
+        try {
+            # Uninstall Chocolatey using the built-in uninstall command
+            & "C:\ProgramData\chocolatey\choco.exe" uninstall chocolatey -y
+
+            # Optionally remove the Chocolatey folder and registry keys
+            Remove-Item -Recurse -Force "C:\ProgramData\chocolatey" -ErrorAction SilentlyContinue
+            Remove-Item -Recurse -Force "$env:ChocolateyInstall" -ErrorAction SilentlyContinue
+
+            # Clean up environment variables
+            [System.Environment]::SetEnvironmentVariable('ChocolateyInstall', $null, [System.EnvironmentVariableTarget]::Machine)
+
+            Write-Host "Chocolatey uninstalled successfully." -ForegroundColor Green
+        }
+        catch {
+            Write-Host "[ERROR] Failed to uninstall Chocolatey." -ForegroundColor Red
+        }
+    } else {
+        Write-Host "Chocolatey is not installed." -ForegroundColor Yellow
+    }
+}
+
+
 # Enable TLS 1.2 (required for connecting to Chocolatey repository)
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
@@ -39,18 +82,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 }
 
 # Install Chocolatey if not already installed
-if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
-    Write-Host "Installing Chocolatey..." -ForegroundColor Green
-    Set-ExecutionPolicy Bypass -Scope Process -Force
-    [System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
-    try {
-        Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    }
-    catch {
-        Write-Host "[FATAL] Failed to install Chocolatey. Exiting script."  -ForegroundColor Red
-        exit 1
-    }
-}
+Install-Chocolatey
 
 # Load and parse the JSON file
 $LocalJsonPath = Load-FileFromGithub "apps.json"
@@ -112,3 +144,5 @@ if ($SuccessfulAppCount -lt $TotalAppCount) {
     exit 1
 }
 
+# Uninstall Chocolatey
+Uninstall-Chocolatey
