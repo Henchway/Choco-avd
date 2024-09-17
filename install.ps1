@@ -1,6 +1,7 @@
 # CONSTANTS
 $GITHUB_URL = "https://raw.githubusercontent.com/Henchway/Choco-avd/main"
 $TempDirectory = ".\temp\"
+$LocalJsonPath = Load-FileFromGithub "apps.json"
 
 # Ensure temp directory exists
 if (-not (Test-Path $TempDirectory)) {
@@ -50,9 +51,6 @@ if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
     [System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
     Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 }
-
-# Load apps.json from GitHub
-$LocalJsonPath = Load-FileFromGithub "apps.json"
 
 # Load and parse the JSON file
 try {

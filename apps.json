@@ -85,7 +85,7 @@
     },
     {
         "name": "winscp",
-        "version": "06.03.2005",
+        "version": "6.3.5",
         "argumentString": "",
         "pre_script": ""
     },
