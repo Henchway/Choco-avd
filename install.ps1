@@ -79,7 +79,13 @@ foreach ($App in $Apps) {
         }
     }
     else {
-        powershell.exe -File $App.customInstallScript
+        try {
+            powershell.exe -File $App.customInstallScript
+            
+        } 
+        catch {
+            $SuccessfulAppCount -= 1
+        }
     }
 }
 
