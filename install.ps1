@@ -51,9 +51,11 @@ Set-Location $REPO_NAME
 # Import functions module
 Import-Module "./functions.psm1"
 
-# Parse JSON file
+# Parse YAML file
+Install-Module -Name powershell-yaml
+
 try {
-    $Apps = Get-Content -Path "./apps.json" -Raw | ConvertFrom-Json
+    $Apps = Get-Content -Path "./apps.json" -Raw | ConvertFrom-Yaml
 }
 catch {
     Write-Host "[FATAL] Failed to load apps.json, error message: $($_.Exception.Message)" -ForegroundColor Red
