@@ -76,7 +76,10 @@ function Install-WithChoco {
 
         $installedPackages = choco list
         if ($installedPackages -notcontains "$($App.name)") {
+            Write-Host "Application not installed"
             throw "Application not installed"
+        } else {
+            Write-Host "Application found"
         }
         Write-Host "[INFO] Successfully installed $($App.name)"  -ForegroundColor Green
     }
