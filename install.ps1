@@ -85,13 +85,15 @@ foreach ($App in $Apps) {
 }
 
 Write-Host "[INFO] Successfully installed $($SuccessfulAppCount)/$($TotalAppCount) applications."
+# Move back to root folder
+Set-Location ".."
+
+# Uninstall Chocolatey
+# Uninstall-Chocolatey
+
 if ($SuccessfulAppCount -lt $TotalAppCount) {
     Write-Host "[FATAL] Not all apps were installed successfully, failing script."  -ForegroundColor Red
     exit 1
 }
 
-# Uninstall Chocolatey
-# Uninstall-Chocolatey
 
-# Move back to root folder
-Set-Location ".."
