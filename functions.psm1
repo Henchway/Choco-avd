@@ -31,7 +31,7 @@ function Install-WithChoco {
     )
     $InstallCommand = "choco install $($App.name) -y --no-progress"
 
-    Ensures to not install any applications when running in vscode
+    # Ensures to not install any applications when running in vscode
     if ($env:TERM_PROGRAM -eq "vscode") {
         $InstallCommand += " --noop"
     }
@@ -52,10 +52,8 @@ function Install-WithChoco {
             Write-Host "[ERROR] Failed to execute pre-script for app $($App.name), error message: $($_.Exception.Message)"  -ForegroundColor Red
         }
     }
-
     Write-Host "Executing command: $InstallCommand"
     try {
-
         # Execute the command
         Invoke-Expression $InstallCommand
     
@@ -63,7 +61,6 @@ function Install-WithChoco {
         if ($LASTEXITCODE -ne 0) {
             throw
         }
-
         Write-Host "[INFO] Successfully installed $($App.name)"  -ForegroundColor Green
     }
     catch {
