@@ -79,7 +79,7 @@ foreach ($App in $Apps) {
         }
     }
     else {
-        
+        powershell.exe -File $App.customInstallScript
     }
 }
 

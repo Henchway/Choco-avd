@@ -1,5 +1,3 @@
-
-
 function Uninstall-Chocolatey {
     if (Get-Command choco -ErrorAction SilentlyContinue) {
         Write-Host "Uninstalling Chocolatey..." -ForegroundColor Yellow
@@ -68,3 +66,20 @@ function Install-WithChoco {
     }
 }
 
+function Load-WebFile {
+    param (
+        [string]$Url,
+        [string]$FilePath
+    )
+
+    # Check if file already exists in temp directory
+    try {
+        Invoke-WebRequest -Uri $Url -OutFile $FilePath -ErrorAction Stop
+        Write-Host "Downloaded: $FilePath"
+    }
+    catch {
+        Write-Host "Error downloading $FilePath from $Url" -ForegroundColor Red
+        throw
+    }
+}
+    

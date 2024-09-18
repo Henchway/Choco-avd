@@ -111,5 +111,5 @@
 #   customInstallScript: ""
 
 - name: "powershell7"
-  installType: "choco"
+  installType: "custom"
   customInstallScript: ".\\custom\\powershell7\\powershell7.ps1"
