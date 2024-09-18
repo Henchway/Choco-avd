@@ -1,21 +1,4 @@
-function Install-Chocolatey {
-    if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
-        Write-Host "Installing Chocolatey..." -ForegroundColor Green
-        Set-ExecutionPolicy Bypass -Scope Process -Force
-        [System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
-        try {
-            Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-            Write-Host "Chocolatey installation completed." -ForegroundColor Green
-        }
-        catch {
-            Write-Host "[FATAL] Failed to install Chocolatey. Exiting script." -ForegroundColor Red
-            exit 1
-        }
-    }
-    else {
-        Write-Host "Chocolatey is already installed." -ForegroundColor Yellow
-    }
-}
+
 
 function Uninstall-Chocolatey {
     if (Get-Command choco -ErrorAction SilentlyContinue) {
@@ -72,18 +55,13 @@ function Install-WithChoco {
 
     Write-Host "Executing command: $InstallCommand"
     try {
-        Invoke-Expression $InstallCommand
+        powershell.exe -Command $InstallCommand
         
-        # Check the exit code or validate the installation
-        if ($LASTEXITCODE -ne 0) {
-            throw "Installation failed with exit code $LASTEXITCODE."
-        }
-
-        # $installedPackages = choco list
-        # if ($installedPackages -notcontains "$($App.name)") {
-        #     Write-Host "Application not installed"
-        #     throw "Application not installed"
+        # # Check the exit code or validate the installation
+        # if ($LASTEXITCODE -ne 0) {
+        #     throw "Installation failed with exit code $LASTEXITCODE."
         # }
+
         else {
             Write-Host "Application found"
         }
