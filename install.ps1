@@ -51,7 +51,12 @@ foreach ($App in $Apps) {
     Write-Host "Installing $($App.name)..." -ForegroundColor Green
 
     if ($App.installType -eq 'choco') {
-        Install-WithChoco($App)
+        try {
+            Install-WithChoco($App)
+        }
+        catch {
+            $SuccessfulAppCount -= 1
+        }
     }
     else {
         

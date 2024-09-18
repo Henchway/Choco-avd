@@ -1,27 +1,3 @@
-# Function to download file from GitHub
-# function Load-FileFromGithub {
-#     param (
-#         [string]$GITHUB_URL,
-#         [string]$FilePath,
-#         [string]$TempDirectory
-#     )
-#     $FileName = ($FilePath -split '/')[-1]
-#     $LocalFilePath = "$TempDirectory$FileName"
-    
-#     # Check if file already exists in temp directory
-#     try {
-#         $UniquenessParameter = [guid]::NewGuid()
-#         $InvokeUrl = "$($GITHUB_URL)/$($FilePath)?token=$($UniquenessParameter)"
-#         Invoke-WebRequest -Uri $InvokeUrl -OutFile $LocalFilePath -ErrorAction Stop
-#         Write-Host "Downloaded: $FileName"
-#     }
-#     catch {
-#         Write-Host "Error downloading $FileName from $InvokeUrl" -ForegroundColor Red
-#         exit 1
-#     }
-#     return $LocalFilePath
-# }
-
 function Install-Chocolatey {
     if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
         Write-Host "Installing Chocolatey..." -ForegroundColor Green
@@ -101,7 +77,7 @@ function Install-WithChoco {
     }
     catch {
         Write-Host "[ERROR] Failed to install $($App.name), error message: $($_.Exception.Message)"  -ForegroundColor Red
-        $SuccessfulAppCount -= 1
+        exit 1
     }
 }
 
