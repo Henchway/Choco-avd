@@ -61,14 +61,14 @@ function Install-WithChoco {
     
         # Check the exit code or validate the installation
         if ($LASTEXITCODE -ne 0) {
-            throw "Installation failed with exit code $LASTEXITCODE."
+            throw
         }
 
         Write-Host "[INFO] Successfully installed $($App.name)"  -ForegroundColor Green
     }
     catch {
         Write-Host "[ERROR] Failed to install $($App.name), error message: $($_.Exception.Message)"  -ForegroundColor Red
-        exit 1
+        throw
     }
 }
 
