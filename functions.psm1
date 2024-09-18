@@ -58,6 +58,7 @@ function Install-WithChoco {
         Invoke-Expression $InstallCommand
     
         # Check the exit code or validate the installation
+        Write-Host "Last exit code: $LASTEXITCODE"
         if ($LASTEXITCODE -ne 0) {
             throw
         }
