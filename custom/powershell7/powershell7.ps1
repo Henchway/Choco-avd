@@ -8,7 +8,7 @@ if (!(Test-Path $TempFolderPath)) {
 }
 
 # Import functions
-Import-Module "./../../functions.psm1"
+Import-Module -name ".\functions.psm1"
 
 # Load Powershell
 Load-WebFile $MsiUrl $MsiPath
@@ -16,8 +16,8 @@ Load-WebFile $MsiUrl $MsiPath
 # Install Powershell
 $MuiLang = "en-US" # adjust to your desired language
 $Switches = "/quiet /norestart"
-# Start-Process -Wait -FilePath "C:\Windows\System32\msiexec.exe" -ArgumentList "/i", $MsiPath, "$Switches"
-Write-Host "Would start install process now"
+Write-Host "Installing Powershell7"
+Start-Process -Wait -FilePath "C:\Windows\System32\msiexec.exe" -ArgumentList "/i", $MsiPath, "$Switches"
 
 # Error Handling
 if ($LASTEXITCODE -ne 0) {
