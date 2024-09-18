@@ -42,6 +42,7 @@ Write-Host "Executing '$($GitInstallCommand)'"
 powershell.exe -Command $GitInstallCommand
 
 # Reload environment
+Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
 refreshenv
 
 
