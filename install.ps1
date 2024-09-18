@@ -23,7 +23,11 @@ powershell.exe -Command $GitInstallCommand
 
 # Load Git repo
 if (Test-Path ".\$REPO_NAME") {
+    Write-Host "Deleting repo folder"
     Remove-Item -Recurse -Force .\$REPO_NAME
+}
+else {
+    Write-Host "Repo does not exist, continuing."
 }
 git clone $GITHUB_REPO
 Set-Location $REPO_NAME
