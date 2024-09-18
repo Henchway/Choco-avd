@@ -1,5 +1,133 @@
 ﻿[
     {
+        "name": "7zip",
+        "chocoVersion": "",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "adobereader",
+        "chocoVersion": "2024.2.20857",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "amazon-workspaces",
+        "chocoVersion": "5.22.1.4847",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "filezilla",
+        "chocoVersion": "3.67.1",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "firefox",
+        "chocoVersion": "129.0.2",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "googlechrome",
+        "chocoVersion": "129.0.6668.42",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "mremoteng",
+        "chocoVersion": "1.76.20.24615",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "notepadplusplus",
+        "chocoVersion": "8.6.9",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "putty",
+        "chocoVersion": "0.81.0",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "python311",
+        "chocoVersion": "3.11.9",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "vlc",
+        "chocoVersion": "3.0.21",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "vscode",
+        "chocoVersion": "1.93.1",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "vscode-powershell",
+        "chocoVersion": "2024.2.2",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "windows-sdk-10-chocoVersion-2004-windbg",
+        "chocoVersion": "10.0.19041.685",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "winscp",
+        "chocoVersion": "6.3.5",
+        "chocoArgumentString": "",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
+        "name": "ultravnc",
+        "chocoVersion": "",
+        "chocoArgumentString": "/LoadInf=.\\pre\\uvnc\\uvnc.inf",
+        "chocoPreScript": "",
+        "installType": "choco",
+        "customInstallScript": ""
+    },
+    {
         "name": "powershell7",
         "installType": "choco",
         "customInstallScript": ".\\custom\\powershell7\\powershell7.ps1"

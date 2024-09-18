@@ -31,10 +31,10 @@ function Install-WithChoco {
     )
     $InstallCommand = "choco install $($App.name) -y --no-progress"
 
-    # Ensures to not install any applications when running in vscode
-    # if ($env:TERM_PROGRAM -eq "vscode") {
-    #     $InstallCommand += " --noop"
-    # }
+    Ensures to not install any applications when running in vscode
+    if ($env:TERM_PROGRAM -eq "vscode") {
+        $InstallCommand += " --noop"
+    }
 
     if ($App.chocoVersion) {
         $InstallCommand += " --version $($App.chocoVersion)"

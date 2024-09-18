@@ -86,7 +86,7 @@ foreach ($App in $Apps) {
 
 Write-Host "[INFO] Successfully installed $($SuccessfulAppCount)/$($TotalAppCount) applications."
 if ($SuccessfulAppCount -lt $TotalAppCount) {
-    Write-Host "[FATAL] Not all apps were installed successfully, failing script."
+    Write-Host "[FATAL] Not all apps were installed successfully, failing script."  -ForegroundColor Red
     exit 1
 }
 
