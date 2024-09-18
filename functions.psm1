@@ -1,25 +1,31 @@
 function Uninstall-Chocolatey {
-    if (Get-Command choco -ErrorAction SilentlyContinue) {
-        Write-Host "Uninstalling Chocolatey..." -ForegroundColor Yellow
-        try {
-            # Uninstall Chocolatey using the built-in uninstall command
-            & "C:\ProgramData\chocolatey\choco.exe" uninstall chocolatey -y
 
-            # Optionally remove the Chocolatey folder and registry keys
-            Remove-Item -Recurse -Force "C:\ProgramData\chocolatey" -ErrorAction SilentlyContinue
-            Remove-Item -Recurse -Force "$env:ChocolateyInstall" -ErrorAction SilentlyContinue
-
-            # Clean up environment variables
-            [System.Environment]::SetEnvironmentVariable('ChocolateyInstall', $null, [System.EnvironmentVariableTarget]::Machine)
-
-            Write-Host "Chocolatey uninstalled successfully." -ForegroundColor Green
-        }
-        catch {
-            Write-Host "[ERROR] Failed to uninstall Chocolatey." -ForegroundColor Red
-        }
+    if ($env:TERM_PROGRAM -eq "vscode") {
+        Write-Host "Skipping chocolatey uninstall"
     }
     else {
-        Write-Host "Chocolatey is not installed." -ForegroundColor Yellow
+        if (Get-Command choco -ErrorAction SilentlyContinue) {
+            Write-Host "Uninstalling Chocolatey..." -ForegroundColor Yellow
+            try {
+                # Uninstall Chocolatey using the built-in uninstall command
+                & "C:\ProgramData\chocolatey\choco.exe" uninstall chocolatey -y
+
+                # Optionally remove the Chocolatey folder and registry keys
+                Remove-Item -Recurse -Force "C:\ProgramData\chocolatey" -ErrorAction SilentlyContinue
+                Remove-Item -Recurse -Force "$env:ChocolateyInstall" -ErrorAction SilentlyContinue
+
+                # Clean up environment variables
+                [System.Environment]::SetEnvironmentVariable('ChocolateyInstall', $null, [System.EnvironmentVariableTarget]::Machine)
+
+                Write-Host "Chocolatey uninstalled successfully." -ForegroundColor Green
+            }
+            catch {
+                Write-Host "[ERROR] Failed to uninstall Chocolatey." -ForegroundColor Red
+            }
+        }
+        else {
+            Write-Host "Chocolatey is not installed." -ForegroundColor Yellow
+        }
     }
 }
 

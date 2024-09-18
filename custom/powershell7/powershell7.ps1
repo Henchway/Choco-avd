@@ -8,7 +8,7 @@ if (!(Test-Path $TempFolderPath)) {
 }
 
 # Import functions
-Import-Module "../../functions.psm1"
+Import-Module "./../../functions.psm1"
 
 # Load Powershell
 Load-WebFile $MsiUrl $MsiPath
