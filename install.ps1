@@ -38,7 +38,12 @@ $GitInstallCommand = "choco install git -y --no-progress"
 if ($env:TERM_PROGRAM -eq "vscode") {
     $GitInstallCommand += " --noop"
 }
+Write-Host "Executing '$($GitInstallCommand)'"
 powershell.exe -Command $GitInstallCommand
+
+# Reload environment
+refreshenv
+
 
 # Load Git repo
 if (Test-Path ".\$REPO_NAME") {
