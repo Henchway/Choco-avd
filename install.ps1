@@ -55,10 +55,10 @@ Import-Module "./functions.psm1"
 Install-Module -Name powershell-yaml -Force -Confirm:$false
 
 try {
-    $Apps = Get-Content -Path "./apps.json" -Raw | ConvertFrom-Yaml
+    $Apps = Get-Content -Path "./apps.yaml" -Raw | ConvertFrom-Yaml
 }
 catch {
-    Write-Host "[FATAL] Failed to load apps.json, error message: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "[FATAL] Failed to load apps.yaml, error message: $($_.Exception.Message)" -ForegroundColor Red
     exit 1
 }
 
