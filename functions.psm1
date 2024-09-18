@@ -73,10 +73,10 @@ function Install-WithChoco {
     Write-Host "Executing command: $InstallCommand"
     try {
         powershell.exe -Command $InstallCommand
-        
-        $installedPackages = choco list --local-only
+
+        $installedPackages = choco list
         if ($installedPackages -notcontains "$($App.name)") {
-            throw
+            throw "Application not installed"
         }
         Write-Host "[INFO] Successfully installed $($App.name)"  -ForegroundColor Green
     }

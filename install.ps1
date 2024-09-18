@@ -72,7 +72,7 @@ if ($SuccessfulAppCount -lt $TotalAppCount) {
 }
 
 # Uninstall Chocolatey
-Uninstall-Chocolatey
+# Uninstall-Chocolatey
 
 # Move back to root folder
 Set-Location ".."
