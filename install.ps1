@@ -60,11 +60,9 @@ catch {
     exit 1
 }
 
-
 # Set counters for successful installation
 $TotalAppCount = $Apps | Measure-Object | Select-Object -ExpandProperty Count
 $SuccessfulAppCount = $TotalAppCount
-
 
 # Loop through each app and install it
 foreach ($App in $Apps) {
@@ -81,7 +79,6 @@ foreach ($App in $Apps) {
     else {
         
     }
-
 }
 
 Write-Host "[INFO] Successfully installed $($SuccessfulAppCount)/$($TotalAppCount) applications."
@@ -89,7 +86,7 @@ Write-Host "[INFO] Successfully installed $($SuccessfulAppCount)/$($TotalAppCoun
 Set-Location ".."
 
 # Uninstall Chocolatey
-# Uninstall-Chocolatey
+Uninstall-Chocolatey
 
 if ($SuccessfulAppCount -lt $TotalAppCount) {
     Write-Host "[FATAL] Not all apps were installed successfully, failing script."  -ForegroundColor Red

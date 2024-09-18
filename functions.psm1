@@ -35,7 +35,6 @@ function Install-WithChoco {
     if ($env:TERM_PROGRAM -eq "vscode") {
         $InstallCommand += " --noop"
     }
-
     if ($App.chocoVersion) {
         $InstallCommand += " --version $($App.chocoVersion)"
     }
@@ -58,14 +57,13 @@ function Install-WithChoco {
         Invoke-Expression $InstallCommand
     
         # Check the exit code or validate the installation
-        Write-Host "Last exit code: $LASTEXITCODE"
         if ($LASTEXITCODE -ne 0) {
             throw
         }
         Write-Host "[INFO] Successfully installed $($App.name)"  -ForegroundColor Green
     }
     catch {
-        Write-Host "[ERROR] Failed to install $($App.name), error message: $($_.Exception.Message)"  -ForegroundColor Red
+        Write-Host "[ERROR] Failed to install $($App.name)."  -ForegroundColor Red
         throw
     }
 }
