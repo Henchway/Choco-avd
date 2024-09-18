@@ -52,7 +52,7 @@ Set-Location $REPO_NAME
 Import-Module "./functions.psm1"
 
 # Parse YAML file
-Install-Module -Name powershell-yaml
+Install-Module -Name powershell-yaml -Force -Confirm:$false
 
 try {
     $Apps = Get-Content -Path "./apps.json" -Raw | ConvertFrom-Yaml
