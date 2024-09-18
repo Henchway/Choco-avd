@@ -72,7 +72,7 @@ function Install-WithChoco {
 
     Write-Host "Executing command: $InstallCommand"
     try {
-        powershell.exe -Command $InstallCommand
+        Invoke-Expression $InstallCommand
 
         $installedPackages = choco list
         if ($installedPackages -notcontains "$($App.name)") {

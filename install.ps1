@@ -15,7 +15,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 Install-Chocolatey
 
 # Install git
-$GitInstallCommand = "choco install git -y"
+$GitInstallCommand = "choco install git -y --no-progress"
 if ($env:TERM_PROGRAM -eq "vscode") {
     $GitInstallCommand += " --noop"
 }
