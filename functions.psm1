@@ -55,7 +55,15 @@ function Install-WithChoco {
 
     Write-Host "Executing command: $InstallCommand"
     try {
-        powershell.exe -Command $InstallCommand
+
+        # Execute the command
+        Invoke-Expression $InstallCommand
+    
+        # Check the exit code or validate the installation
+        if ($LASTEXITCODE -ne 0) {
+            throw "Installation failed with exit code $LASTEXITCODE."
+        }
+
         Write-Host "[INFO] Successfully installed $($App.name)"  -ForegroundColor Green
     }
     catch {
