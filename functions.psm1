@@ -73,12 +73,18 @@ function Install-WithChoco {
     Write-Host "Executing command: $InstallCommand"
     try {
         Invoke-Expression $InstallCommand
+        
+        # Check the exit code or validate the installation
+        if ($LASTEXITCODE -ne 0) {
+            throw "Installation failed with exit code $LASTEXITCODE."
+        }
 
-        $installedPackages = choco list
-        if ($installedPackages -notcontains "$($App.name)") {
-            Write-Host "Application not installed"
-            throw "Application not installed"
-        } else {
+        # $installedPackages = choco list
+        # if ($installedPackages -notcontains "$($App.name)") {
+        #     Write-Host "Application not installed"
+        #     throw "Application not installed"
+        # }
+        else {
             Write-Host "Application found"
         }
         Write-Host "[INFO] Successfully installed $($App.name)"  -ForegroundColor Green
