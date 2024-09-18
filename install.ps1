@@ -22,7 +22,7 @@ if ($env:TERM_PROGRAM -eq "vscode") {
 powershell.exe -Command $GitInstallCommand
 
 # Load Git repo
-if (Test-Path .\$REPO_NAME) {
+if (Test-Path ".\$REPO_NAME") {
     Remove-Item -Recurse -Force .\$REPO_NAME
 }
 git clone $GITHUB_REPO
