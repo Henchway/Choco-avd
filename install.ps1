@@ -26,9 +26,6 @@ if (Test-Path ".\$REPO_NAME") {
     Write-Host "Deleting repo folder"
     Remove-Item -Recurse -Force .\$REPO_NAME
 }
-else {
-    Write-Host "Repo does not exist, continuing."
-}
 git clone $GITHUB_REPO
 Set-Location $REPO_NAME
 
@@ -76,3 +73,6 @@ if ($SuccessfulAppCount -lt $TotalAppCount) {
 
 # Uninstall Chocolatey
 Uninstall-Chocolatey
+
+# Move back to root folder
+Set-Location ".."
