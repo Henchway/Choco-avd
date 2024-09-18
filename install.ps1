@@ -1,76 +1,6 @@
 # CONSTANTS
-$GITHUB_URL = "https://raw.githubusercontent.com/Henchway/Choco-avd/main"
-$TempDirectory = ".\temp\"
-
-# Ensure temp directory exists
-if (-not (Test-Path $TempDirectory)) {
-    New-Item -Path $TempDirectory -ItemType Directory | Out-Null
-}
-
-# Function to download file from GitHub
-function Load-FileFromGithub {
-    param (
-        [string]$FilePath
-    )
-    $FileName = ($FilePath -split '/')[-1]
-    $LocalFilePath = "$TempDirectory$FileName"
-    
-    # Check if file already exists in temp directory
-    try {
-        $UniquenessParameter = [guid]::NewGuid()
-        $InvokeUrl = "$($GITHUB_URL)/$($FilePath)?token=$($UniquenessParameter)"
-        Invoke-WebRequest -Uri $InvokeUrl -OutFile $LocalFilePath -ErrorAction Stop
-        Write-Host "Downloaded: $FileName"
-    }
-    catch {
-        Write-Host "Error downloading $FileName from $InvokeUrl" -ForegroundColor Red
-        exit 1
-    }
-    return $LocalFilePath
-}
-
-function Install-Chocolatey {
-    if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
-        Write-Host "Installing Chocolatey..." -ForegroundColor Green
-        Set-ExecutionPolicy Bypass -Scope Process -Force
-        [System.Net.WebRequest]::DefaultWebProxy.Credentials = [System.Net.CredentialCache]::DefaultCredentials
-        try {
-            Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-            Write-Host "Chocolatey installation completed." -ForegroundColor Green
-        }
-        catch {
-            Write-Host "[FATAL] Failed to install Chocolatey. Exiting script." -ForegroundColor Red
-            exit 1
-        }
-    } else {
-        Write-Host "Chocolatey is already installed." -ForegroundColor Yellow
-    }
-}
-
-function Uninstall-Chocolatey {
-    if (Get-Command choco -ErrorAction SilentlyContinue) {
-        Write-Host "Uninstalling Chocolatey..." -ForegroundColor Yellow
-        try {
-            # Uninstall Chocolatey using the built-in uninstall command
-            & "C:\ProgramData\chocolatey\choco.exe" uninstall chocolatey -y
-
-            # Optionally remove the Chocolatey folder and registry keys
-            Remove-Item -Recurse -Force "C:\ProgramData\chocolatey" -ErrorAction SilentlyContinue
-            Remove-Item -Recurse -Force "$env:ChocolateyInstall" -ErrorAction SilentlyContinue
-
-            # Clean up environment variables
-            [System.Environment]::SetEnvironmentVariable('ChocolateyInstall', $null, [System.EnvironmentVariableTarget]::Machine)
-
-            Write-Host "Chocolatey uninstalled successfully." -ForegroundColor Green
-        }
-        catch {
-            Write-Host "[ERROR] Failed to uninstall Chocolatey." -ForegroundColor Red
-        }
-    } else {
-        Write-Host "Chocolatey is not installed." -ForegroundColor Yellow
-    }
-}
-
+$REPO_NAME = "Choco-avd"
+$GITHUB_REPO = "git@github.com:Henchway/$($REPO_NAME).git"
 
 # Enable TLS 1.2 (required for connecting to Chocolatey repository)
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -84,15 +14,30 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 # Install Chocolatey if not already installed
 Install-Chocolatey
 
-# Load and parse the JSON file
-$LocalJsonPath = Load-FileFromGithub "apps.json"
+# Install git
+$GitInstallCommand = "choco install git -y"
+if ($env:TERM_PROGRAM -eq "vscode") {
+    $GitInstallCommand += " --noop"
+}
+powershell.exe -Command $GitInstallCommand
+
+# Load Git repo
+Remove-Item -Recurse -Force .\$REPO_NAME
+git clone $GITHUB_REPO
+Set-Location $REPO_NAME
+
+# Import functions module
+Import-Module "./functions.psm1"
+
+# Parse JSON file
 try {
-    $Apps = Get-Content -Path $LocalJsonPath -Raw | ConvertFrom-Json
+    $Apps = Get-Content -Path "./apps.json" -Raw | ConvertFrom-Json
 }
 catch {
     Write-Host "[FATAL] Failed to load apps.json, error message: $($_.Exception.Message)" -ForegroundColor Red
     exit 1
 }
+
 
 # Set counters for successful installation
 $TotalAppCount = $Apps | Measure-Object | Select-Object -ExpandProperty Count
@@ -102,40 +47,14 @@ $SuccessfulAppCount = $TotalAppCount
 # Loop through each app and install it
 foreach ($App in $Apps) {
     Write-Host "Installing $($App.name)..." -ForegroundColor Green
-    $InstallCommand = "choco install $($App.name) -y --no-progress"
-    
-    # Ensures to not install any applications when running in vscode
-    if ($env:TERM_PROGRAM -eq "vscode") {
-        $InstallCommand += " --noop"
+
+    if ($App.installType -eq 'choco') {
+        Install-WithChoco($App)
+    }
+    else {
+        
     }
 
-    if ($App.version) {
-        $InstallCommand += " --version $($App.version)"
-    }
-    if ($App.argumentString) {
-        $InstallCommand += " --install-arguments='$($App.argumentString)'"
-    }
-
-    # If pre-script is specified, run it
-    if ($App.pre_script) {
-        $PreScriptPath = Load-FileFromGithub $App.pre_script
-        try {
-            powershell.exe -File $PreScriptPath -GITHUB_URL $($GITHUB_URL)
-        }
-        catch {
-            Write-Host "[ERROR] Failed to execute pre-script for app $($App.name), error message: $($_.Exception.Message)"  -ForegroundColor Red
-        }
-    }
-
-    Write-Host "Executing command: $InstallCommand"
-    try {
-        powershell.exe -Command $InstallCommand
-        Write-Host "[INFO] Successfully installed $($App.name)"  -ForegroundColor Green
-    }
-    catch {
-        Write-Host "[ERROR] Failed to install $($App.name), error message: $($_.Exception.Message)"  -ForegroundColor Red
-        $SuccessfulAppCount -= 1
-    }
 }
 
 Write-Host "[INFO] Successfully installed $($SuccessfulAppCount)/$($TotalAppCount) applications."
