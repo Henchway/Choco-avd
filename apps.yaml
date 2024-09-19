@@ -54,7 +54,7 @@
   installType: "choco"
   customInstallScript: ""
 
-- name: "putty"
+- name: "putty.install"
   chocoVersion: "0.81.0"
   chocoArgumentString: ""
   chocoPreScript: ""
