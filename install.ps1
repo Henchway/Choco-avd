@@ -1,6 +1,6 @@
 # CONSTANTS
 $REPO_NAME = "Choco-avd"
-$GITHUB_REPO = "git@github.com:Henchway/$($REPO_NAME).git"
+$GITHUB_REPO = "https://github.com/Henchway/Choco-avd.git"
 
 # Enable TLS 1.2 (required for connecting to Chocolatey repository)
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -44,7 +44,6 @@ powershell.exe -Command $GitInstallCommand
 # Reload environment
 Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
 refreshenv
-
 
 # Load Git repo
 if (Test-Path ".\$REPO_NAME") {
