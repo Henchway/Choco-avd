@@ -8,16 +8,10 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     exit 1
 }
 
-# Reload environment
-# Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
-# refreshenv
-
 # Load Git repo
-if (Test-Path ".\$REPO_NAME") {
-    Write-Host "Deleting repo folder"
-    Remove-Item -Recurse -Force .\$REPO_NAME
+if (-not(Test-Path ".\$REPO_NAME")) {
+    git clone $GITHUB_REPO
 }
-git clone $GITHUB_REPO
 Set-Location $REPO_NAME
 
 # Import functions module
@@ -36,13 +30,36 @@ catch {
 $TotalAppCount = $Apps | Measure-Object | Select-Object -ExpandProperty Count
 $SuccessfulAppCount = $TotalAppCount
 
+# Remove any potential previously set scheduled tasks
+Unregister-ScheduledTask -TaskName "ResumeAppInstallationAfterReboot" -Confirm:$false -ErrorAction SilentlyContinue
+
 # Loop through each app and install it
-foreach ($App in $Apps) {
+for ($i = 0; $i -lt $Apps.Count; $i++) {
+    $App = $Apps[$i]
+
     Write-Host "Installing $($App.name)..." -ForegroundColor Green
 
     if ($App.installType -eq 'choco') {
         try {
             Install-WithChoco($App)
+            If($App.rebootRequired) {
+
+                # Write away the apps not yet installed
+                Import-Module PSYaml
+                $yamlContent = ConvertTo-Yaml $Apps[$i+1..($Apps.Length - 1)]
+                Set-Content -Path "./apps.yaml" -Value $yamlContent
+                Write-Host "YAML file created successfully"
+
+                # Start the script again after the reboot
+                $taskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-File `"$($MyInvocation.MyCommand.Path)`""
+                $taskTrigger = New-ScheduledTaskTrigger -AtStartup
+                Register-ScheduledTask -Action $taskAction -Trigger $taskTrigger -TaskName "ResumeAppInstallationAfterReboot"
+
+                # Restart
+                Restart-Computer -Force
+
+            }
+            
         }
         catch {
             $SuccessfulAppCount -= 1
@@ -58,6 +75,7 @@ foreach ($App in $Apps) {
         }
     }
 }
+
 
 Write-Host "[INFO] Successfully installed $($SuccessfulAppCount)/$($TotalAppCount) applications."
 # Move back to root folder

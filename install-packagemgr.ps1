@@ -41,3 +41,6 @@ powershell.exe -Command $GitInstallCommand
 Install-PackageProvider -Name NuGet -Force -Confirm:$false
 Install-Module -Name powershell-yaml -Force -Confirm:$false
 
+# Install yaml creator
+Install-Module -Name PSYaml -Force -Confirm:$false
+

@@ -4,6 +4,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "adobereader"
   chocoVersion: "2024.2.20857"
@@ -11,6 +12,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "amazon-workspaces"
   chocoVersion: "5.22.1.4847"
@@ -18,6 +20,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "filezilla"
   chocoVersion: "3.67.1"
@@ -25,6 +28,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "firefox"
   chocoVersion: "129.0.2"
@@ -32,6 +36,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "googlechrome"
   chocoVersion: ""
@@ -39,6 +44,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "mremoteng"
   chocoVersion: "1.76.20.24615"
@@ -46,6 +52,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "notepadplusplus"
   chocoVersion: "8.6.9"
@@ -53,6 +60,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "putty.install"
   chocoVersion: "0.81.0"
@@ -60,6 +68,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: true
 
 - name: "python311"
   chocoVersion: "3.11.9"
@@ -67,6 +76,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: true
 
 - name: "vlc"
   chocoVersion: "3.0.21"
@@ -74,6 +84,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "vscode"
   chocoVersion: "1.93.1"
@@ -81,6 +92,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "vscode-powershell"
   chocoVersion: "2024.2.2"
@@ -88,13 +100,15 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: true
 
 - name: "windows-sdk-10-chocoVersion-2004-windbg"
-  chocoVersion: "10.0.19041.685"
+  chocoVersion: ""
   chocoArgumentString: ""
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "winscp"
   chocoVersion: "6.3.5"
@@ -102,6 +116,7 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "ultravnc"
   chocoVersion: ""
@@ -109,7 +124,9 @@
   chocoPreScript: ""
   installType: "choco"
   customInstallScript: ""
+  rebootRequired: false
 
 - name: "powershell7"
   installType: "custom"
   customInstallScript: ".\\custom\\powershell7\\powershell7.ps1"
+  rebootRequired: false
