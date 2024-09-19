@@ -57,6 +57,7 @@ Set-Location $REPO_NAME
 Import-Module "./functions.psm1"
 
 # Parse YAML file
+Install-PackageProvider -Name NuGet -Force -Confirm:$false
 Install-Module -Name powershell-yaml -Force -Confirm:$false
 
 try {
