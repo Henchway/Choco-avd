@@ -34,7 +34,7 @@
   customInstallScript: ""
 
 - name: "googlechrome"
-  chocoVersion: "129.0.6668.42"
+  chocoVersion: ""
   chocoArgumentString: ""
   chocoPreScript: ""
   installType: "choco"
