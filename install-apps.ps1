@@ -17,12 +17,12 @@ Set-Location $REPO_NAME
 # Import functions module
 Import-Module "./functions.psm1"
 
-# Parse YAML file
+# Parse JSON file
 try {
-    $Apps = Get-Content -Path "./apps.yaml" -Raw | ConvertFrom-Yaml
+    $Apps = Get-Content -Path "./apps.json" -Raw | ConvertFrom-Json
 }
 catch {
-    Write-Host "[FATAL] Failed to load apps.yaml, error message: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "[FATAL] Failed to load apps.json, error message: $($_.Exception.Message)" -ForegroundColor Red
     exit 1
 }
 
@@ -45,10 +45,9 @@ for ($i = 0; $i -lt $Apps.Count; $i++) {
             If($App.rebootRequired) {
 
                 # Write away the apps not yet installed
-                Import-Module PSYaml
-                $yamlContent = ConvertTo-Yaml $Apps[$i+1..($Apps.Length - 1)]
-                Set-Content -Path "./apps.yaml" -Value $yamlContent
-                Write-Host "YAML file created successfully"
+                $jsonContent = ConvertTo-Json $Apps[$i+1..($Apps.Length - 1)]
+                Set-Content -Path "./apps.json" -Value $jsonContent
+                Write-Host "JSON file created successfully"
 
                 # Start the script again after the reboot
                 $taskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-File `"$($MyInvocation.MyCommand.Path)`""
