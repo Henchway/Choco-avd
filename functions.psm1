@@ -33,7 +33,7 @@ function Install-WithChoco {
     param (
         [object]$App
     )
-    $InstallCommand = "choco install $($App.name) -y --no-progress --verbose --ignoredetectedreboot"
+    $InstallCommand = "choco install $($App.name) -y --no-progress --ignoredetectedreboot"
 
     # Ensures to not install any applications when running in vscode
     if ($env:TERM_PROGRAM -eq "vscode") {
