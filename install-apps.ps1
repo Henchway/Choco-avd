@@ -63,8 +63,11 @@ for ($i = 0; $i -lt $Apps.Count; $i++) {
 
                 # Restart
                 Write-Host "[INFO] Rebooting..."
-                Restart-Computer -Force
+                Restart-Computer -Force -Confirm:$false
 
+                # Set exit code and stop the PowerShell session
+                Stop-Process -Id $PID -Force -ErrorAction Ignore; exit 0
+                
             }
             
         }
