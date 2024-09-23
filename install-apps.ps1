@@ -30,9 +30,6 @@ catch {
 $TotalAppCount = $Apps | Measure-Object | Select-Object -ExpandProperty Count
 $SuccessfulAppCount = $TotalAppCount
 
-# Remove any potential previously set scheduled tasks
-Unregister-ScheduledTask -TaskName "ResumeAppInstallationAfterReboot" -Confirm:$false -ErrorAction SilentlyContinue
-
 # Loop through each app and install it
 for ($i = 0; $i -lt $Apps.Count; $i++) {
     $App = $Apps[$i]
@@ -51,7 +48,6 @@ for ($i = 0; $i -lt $Apps.Count; $i++) {
     else {
         try {
             powershell.exe -File $App.customInstallScript
-            
         } 
         catch {
             $SuccessfulAppCount -= 1
