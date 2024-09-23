@@ -28,6 +28,10 @@ function Install-Chocolatey {
 # Install Chocolatey if not already installed
 Install-Chocolatey
 
+# Refresh env
+Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+refreshenv
+
 # Install git
 $GitInstallCommand = "choco install git -y --no-progress"
 if ($env:TERM_PROGRAM -eq "vscode") {
