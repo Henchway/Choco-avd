@@ -43,8 +43,9 @@ for ($i = 0; $i -lt $Apps.Count; $i++) {
         try {
             Install-WithChoco($App)
             Write-Host $App.rebootRequired
-            
+
             If($App.rebootRequired) {
+                Write-Host "Attempting to reboot"
 
                 # Write away the apps not yet installed
                 $jsonContent = ConvertTo-Json $Apps[$i+1..($Apps.Length - 1)]
