@@ -96,8 +96,8 @@ function Create-LogElement {
         [boolean] $Success
     )
     return  [pscustomobject]@{
-        Name    = "$App.name"
-        Version = "$App.version"
+        Name    = "$($App.name)"
+        Version = "$($App.version)"
         Success = $Success
     }
 

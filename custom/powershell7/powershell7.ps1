@@ -24,8 +24,7 @@ try {
     Start-Process -Wait -FilePath "C:\Windows\System32\msiexec.exe" -ArgumentList "/i", "$MsiPath", "$Switches"
 }
 catch {
-    $message = $_
-    Write-Host "[ERROR] Error installing $($App): $message"
-    throw $message
+    Write-Host "[ERROR] Error installing $($App): $_"
+    throw $_
 }
 Write-Host "[INFO] $($App) installed successfully"
