@@ -7,6 +7,11 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     exit 1
 }
 function Install-Chocolatey {
+
+    if (Test-Path "C:\ProgramData\chocolatey") {
+        Remove-Item -Path "C:\ProgramData\chocolatey" -Recurse -Force
+    }
+
     if (-not (Get-Command choco -ErrorAction SilentlyContinue)) {
         Write-Host "Installing Chocolatey..." -ForegroundColor Green
         Set-ExecutionPolicy Bypass -Scope Process -Force
