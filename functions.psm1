@@ -95,10 +95,15 @@ function Create-LogElement {
         [object] $App,
         [boolean] $Success
     )
-    return  [pscustomobject]@{
+
+    Write-Host $App
+
+    $LogElement = [pscustomobject]@{
         Name    = "$($App.name)"
         Version = "$($App.version)"
         Success = $Success
     }
+    Write-Host $LogElement
+    return $LogElement
 
 }
