@@ -89,20 +89,17 @@ function Load-WebFile {
         throw "Error: $_"
     }
 }
-    
+
 function Create-LogElement {
     param(
         [object]$App,
         [boolean]$Success
     )
-    Write-Host "[INFO] Creating a log for the following app: $App"
-
     $LogElement = [pscustomobject]@{
         Name    = $($App.name)
-        Version = $($App.version)
+        Version = $($App.chocoVersion)
         Success = $Success
     }
-    Write-Host $LogElement
     return $LogElement
 
 }

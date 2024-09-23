@@ -44,29 +44,28 @@ for ($i = 0; $i -lt $Apps.Count; $i++) {
         }
         catch {
             Write-Host "Encountered error: $_"
-            $InstallStatusTable +=  Create-LogElement -App $App -Success $false  
+            $InstallStatusTable += Create-LogElement -App $App -Success $false  
             $SuccessfulAppCount -= 1
         }
     }
     else {
         try {
             powershell.exe -File $App.customInstallScript
-            $InstallStatusTable +=  Create-LogElement -App $App -Success $true  
+            $InstallStatusTable += Create-LogElement -App $App -Success $true  
         } 
         catch {
             Write-Host "Encountered error: $_"
-            $InstallStatusTable +=  Create-LogElement -App $App -Success $false  
+            $InstallStatusTable += Create-LogElement -App $App -Success $false  
             $SuccessfulAppCount -= 1
         }
     }
 }
 
-
-Write-Host "[INFO] Successfully installed $($SuccessfulAppCount)/$($TotalAppCount) applications."
 # Move back to root folder
 Set-Location ".."
 
 # Log the status table
+Write-Host "[INFO] Successfully installed $($SuccessfulAppCount)/$($TotalAppCount) applications."
 $InstallStatusTable | Format-Table -AutoSize
 
 # Uninstall Chocolatey
