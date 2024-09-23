@@ -92,15 +92,14 @@ function Load-WebFile {
     
 function Create-LogElement {
     param(
-        [object] $App,
-        [boolean] $Success
+        [object]$App,
+        [boolean]$Success
     )
-
     Write-Host $App
 
     $LogElement = [pscustomobject]@{
-        Name    = "$($App.name)"
-        Version = "$($App.version)"
+        Name    = $App.name
+        Version = $App.version
         Success = $Success
     }
     Write-Host $LogElement
