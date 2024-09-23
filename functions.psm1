@@ -90,3 +90,15 @@ function Load-WebFile {
     }
 }
     
+Create-LogElement {
+    param(
+        [object] $App,
+        [boolean] $Success
+    )
+    return  [pscustomobject]@{
+        Name    = "$App.name"
+        Version = "$App.version"
+        Success = $Success
+    }
+
+}

@@ -29,30 +29,32 @@ catch {
 # Set counters for successful installation
 $TotalAppCount = $Apps | Measure-Object | Select-Object -ExpandProperty Count
 $SuccessfulAppCount = $TotalAppCount
+$InstallStatus = @()
+
 
 # Loop through each app and install it
 for ($i = 0; $i -lt $Apps.Count; $i++) {
     $App = $Apps[$i]
-    Write-Host "Attempting to install app with following parameters: $App"
     Write-Host "Installing $($App.name)..." -ForegroundColor Green
-
     if ($App.installType -eq 'choco') {
         try {
-            Install-WithChoco($App)            
+            Install-WithChoco($App)
+            $InstallStatus += Create-LogElement $App $true     
         }
         catch {
             Write-Host "Encountered error: $_"
+            $InstallStatus += Create-LogElement $App $false     
             $SuccessfulAppCount -= 1
         }
     }
     else {
         try {
-            $pathExists = Test-Path $App.customInstallScript
-            Write-Host "The path for $($App.name) exists: $pathExists"
             powershell.exe -File $App.customInstallScript
+            $InstallStatus += Create-LogElement $App $true     
         } 
         catch {
             Write-Host "Encountered error: $_"
+            $InstallStatus += Create-LogElement $App $false     
             $SuccessfulAppCount -= 1
         }
     }
@@ -62,6 +64,9 @@ for ($i = 0; $i -lt $Apps.Count; $i++) {
 Write-Host "[INFO] Successfully installed $($SuccessfulAppCount)/$($TotalAppCount) applications."
 # Move back to root folder
 Set-Location ".."
+
+# Log the status table
+$InstallStatus | Format-Table -AutoSize
 
 # Uninstall Chocolatey
 Uninstall-Chocolatey
