@@ -4,7 +4,7 @@ $GITHUB_REPO = "https://github.com/Henchway/Choco-avd.git"
 
 # Check if running as Administrator
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    Write-Host "[FATAL] You need to run this script as Administrator! Exiting script." -ForegroundColor Red
+    Write-Host "[FATAL] You need to run this script as Administrator!Exiting script." -ForegroundColor Red
     exit 1
 }
 
@@ -36,12 +36,14 @@ Unregister-ScheduledTask -TaskName "ResumeAppInstallationAfterReboot" -Confirm:$
 # Loop through each app and install it
 for ($i = 0; $i -lt $Apps.Count; $i++) {
     $App = $Apps[$i]
-
+    Write-Host "Attempting to install app with following parameters: $App"
     Write-Host "Installing $($App.name)..." -ForegroundColor Green
 
     if ($App.installType -eq 'choco') {
         try {
             Install-WithChoco($App)
+            Write-Host $App.rebootRequired
+            
             If($App.rebootRequired) {
 
                 # Write away the apps not yet installed
@@ -87,5 +89,3 @@ if ($SuccessfulAppCount -lt $TotalAppCount) {
     Write-Host "[FATAL] Not all apps were installed successfully, failing script."  -ForegroundColor Red
     exit 1
 }
-
-
