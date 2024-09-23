@@ -47,9 +47,12 @@ for ($i = 0; $i -lt $Apps.Count; $i++) {
     }
     else {
         try {
+            $pathExists = Test-Path $App.customInstallScript
+            Write-Host "The path for $($App.name) exists: $pathExists"
             powershell.exe -File $App.customInstallScript
         } 
         catch {
+            Write-Host "Encountered error: $_"
             $SuccessfulAppCount -= 1
         }
     }
