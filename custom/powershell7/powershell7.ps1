@@ -11,13 +11,14 @@ if (!(Test-Path $TempFolderPath)) {
 Import-Module -name ".\functions.psm1"
 
 # Load Powershell
+Write-Host "Attempting to load file from $MsiUrl to $MsiPath"
 Load-WebFile $MsiUrl $MsiPath
 
 # Install Powershell
-$MuiLang = "en-US" # adjust to your desired language
+# $MuiLang = "en-US" # adjust to your desired language
 $Switches = "/quiet /norestart"
 Write-Host "Installing Powershell7"
-Start-Process -Wait -FilePath "C:\Windows\System32\msiexec.exe" -ArgumentList "/i", $MsiPath, "$Switches"
+Start-Process -Wait -FilePath "C:\Windows\System32\msiexec.exe" -ArgumentList "/i", "$MsiPath", "$Switches"
 
 # Error Handling
 if ($LASTEXITCODE -ne 0) {

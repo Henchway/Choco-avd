@@ -81,12 +81,13 @@ function Load-WebFile {
 
     # Check if file already exists in temp directory
     try {
+        Write-Host "Downloading from Url: $Url"
         Invoke-WebRequest -Uri $Url -OutFile $FilePath -ErrorAction Stop
         Write-Host "Downloaded: $FilePath"
     }
     catch {
         Write-Host "Error downloading $FilePath from $Url" -ForegroundColor Red
-        throw
+        throw "Error: $_"
     }
 }
     
