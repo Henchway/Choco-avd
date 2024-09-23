@@ -44,26 +44,32 @@ for ($i = 0; $i -lt $Apps.Count; $i++) {
             Install-WithChoco($App)
             Write-Host $App.rebootRequired
 
-            If($App.rebootRequired) {
-                Write-Host "Attempting to reboot"
+            If ($App.rebootRequired) {
+
+                # Check current user:
+                Write-Host $env:USERNAME
 
                 # Write away the apps not yet installed
-                $jsonContent = ConvertTo-Json $Apps[($i+1)..($Apps.Length - 1)]
+                $jsonContent = ConvertTo-Json $Apps[($i + 1)..($Apps.Length - 1)]
                 Set-Content -Path "./apps.json" -Value $jsonContent
                 Write-Host "JSON file created successfully"
 
                 # Start the script again after the reboot
-                $taskAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-File `"$($MyInvocation.MyCommand.Path)`""
+                $parentDir = Split-Path -Path $MyInvocation.MyCommand.Path -Parent
+                $navigateToPreviousPathAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-Command `"Set-Location $($parentDir)`""
+                $startScriptAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-File `"$($MyInvocation.MyCommand.Path)`""
                 $taskTrigger = New-ScheduledTaskTrigger -AtStartup
-                Register-ScheduledTask -Action $taskAction -Trigger $taskTrigger -TaskName "ResumeAppInstallationAfterReboot"
+                Register-ScheduledTask -Action @($navigateToPreviousPathAction, $startScriptAction) -Trigger $taskTrigger -TaskName "ResumeAppInstallationAfterReboot" -User "SYSTEM"
 
                 # Restart
+                Write-Host "[INFO] Rebooting..."
                 Restart-Computer -Force
 
             }
             
         }
         catch {
+            Write-Host "Encountered error: $_"
             $SuccessfulAppCount -= 1
         }
     }
