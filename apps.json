@@ -128,7 +128,7 @@
   {
       "name": "ultravnc",
       "chocoVersion": "",
-      "chocoArgumentString": "/LoadInf=.\\pre\\uvnc\\uvnc.inf",
+      "chocoArgumentString": "'/LoadInf=.\\pre\\uvnc\\uvnc.inf'",
       "chocoPreScript": "",
       "installType": "choco",
       "customInstallScript": "",
