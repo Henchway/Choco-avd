@@ -90,7 +90,7 @@ function Load-WebFile {
     }
 }
     
-Create-LogElement {
+function Create-LogElement {
     param(
         [object] $App,
         [boolean] $Success
