@@ -95,11 +95,11 @@ function Create-LogElement {
         [object]$App,
         [boolean]$Success
     )
-    Write-Host $App
+    Write-Host "[INFO] Creating a log for the following app: $App"
 
     $LogElement = [pscustomobject]@{
-        Name    = $App.name
-        Version = $App.version
+        Name    = $($App.name)
+        Version = $($App.version)
         Success = $Success
     }
     Write-Host $LogElement
