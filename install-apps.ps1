@@ -39,23 +39,23 @@ for ($i = 0; $i -lt $Apps.Count; $i++) {
     if ($App.installType -eq 'choco') {
         try {
             Install-WithChoco($App)
-            $InstallStatus = (Create-LogElement $App $true)    
+            $InstallStatus = Create-LogElement($App, $true)  
             $InstallStatusTable += $InstallStatus
         }
         catch {
             Write-Host "Encountered error: $_"
-            $InstallStatusTable += (Create-LogElement $App $false)     
+            $InstallStatusTable += Create-LogElement($App, $false)     
             $SuccessfulAppCount -= 1
         }
     }
     else {
         try {
             powershell.exe -File $App.customInstallScript
-            $InstallStatusTable += (Create-LogElement $App $true)     
+            $InstallStatusTable += Create-LogElement($App, $true)   
         } 
         catch {
             Write-Host "Encountered error: $_"
-            $InstallStatusTable += (Create-LogElement $App $false)     
+            $InstallStatusTable += Create-LogElement($App, $false)    
             $SuccessfulAppCount -= 1
         }
     }
