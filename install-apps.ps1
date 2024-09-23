@@ -48,7 +48,7 @@ for ($i = 0; $i -lt $Apps.Count; $i++) {
                 Write-Host "Attempting to reboot"
 
                 # Write away the apps not yet installed
-                $jsonContent = ConvertTo-Json 
+                $jsonContent = ConvertTo-Json $Apps[($i+1)..($Apps.Length - 1)]
                 Set-Content -Path "./apps.json" -Value $jsonContent
                 Write-Host "JSON file created successfully"
 
