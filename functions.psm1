@@ -46,15 +46,6 @@ function Install-WithChoco {
         $InstallCommand += " --install-arguments='$($App.chocoArgumentString)'"
     }
 
-    # If pre-script is specified, run it
-    if ($App.chocoPreScript) {
-        try {
-            powershell.exe -File $App.chocoPreScript
-        }
-        catch {
-            Write-Host "[ERROR] Failed to execute pre-script for app $($App.name), error message: $($_.Exception.Message)"  -ForegroundColor Red
-        }
-    }
     Write-Host "Executing command: $InstallCommand"
     try {
         # Execute the command
