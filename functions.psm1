@@ -59,7 +59,7 @@ function Install-WithChoco {
     }
     catch {
         Write-Host "[ERROR] Failed to install $($App.name)."  -ForegroundColor Red
-        throw
+        throw "[ERROR] Error encountered: $_"
     }
 }
 
