@@ -2,7 +2,7 @@
     {
         "name": "ultravnc",
         "chocoVersion": "",
-        "chocoArgumentString": "/loadinf=$($Resolve-Path .\\config\\uvnc\\uvnc.inf)",
+        "chocoArgumentString": "/loadinf=$(Resolve-Path .\\config\\uvnc\\uvnc.inf)",
         "installType": "choco",
         "customInstallScript": ""
     }
