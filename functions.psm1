@@ -43,10 +43,7 @@ function Install-WithChoco {
         $InstallCommand += " --version $($App.chocoVersion)"
     }
     if ($App.chocoArgumentString) {
-        $argumentString = Invoke-Expression $App.chocoArgumentString
-        Write-Host "Argumentstring: $argumentString"
-        $InstallCommand += " --install-arguments=$argumentString"
-        Write-Host "Current install command: $InstallCommand"
+        $InstallCommand += " --install-arguments=$($App.chocoArgumentString)"
     }
 
     Write-Host "Executing command: $InstallCommand"
